@@ -11,12 +11,11 @@ def minOperations(n):
 
     result = 0
     divisor = 2
-    
+
     while n > 1:
         while n % divisor == 0:
             result += divisor
             n //= divisor
         divisor += 1
-    
-    return result
 
+    return result
