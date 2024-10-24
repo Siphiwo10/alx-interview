@@ -2,43 +2,50 @@
 """adding collectios of stats"""
 
 
-from collections import defaultdict
+import sys
 
+if __name__ == "__main__":
 
-total_size = 0
-line_count = 0
-status_counts = defaultdict(int)  # Store counts for each status code
+    status_codes = {200: 0, 301: 0, 400: 0, 401: 0,
+                    403: 0, 404: 0, 405: 0, 500: 0}
+    file_size = [0]
+    count = 1
 
-def print_stats():
-  global total_size, line_count, status_counts
-  print(f"File size: {total_size}")
-  sorted_status_counts = sorted(status_counts.items())
-  for status_code, count in sorted_status_counts:
-    print(f"{status_code}: {count}")
-  line_count = 0
-  total_size = 0
-  status_counts.clear()
+    def print_stats():
+        '''
+        Prints file size and stats for every 10 loops
+        '''
+        print('File size: {}'.format(file_size[0]))
 
-try:
-  for line in sys.stdin:
-    # Split line and extract information
+        for code in sorted(status_codes.keys()):
+            if status_codes[code] != 0:
+                print('{}: {}'.format(code, status_codes[code]))
+
+    def parse_stdin(line):
+        '''
+        Checks the stdin for matches
+        '''
+        try:
+            line = line[:-1]
+            word = line.split(' ')
+            # File size is last parameter on stdout
+            file_size[0] += int(word[-1])
+            # Status code comes before file size
+            status_code = int(word[-2])
+            # Move through dictionary of status codes
+            if status_code in status_codes:
+                status_codes[status_code] += 1
+        except BaseException:
+            pass
+
     try:
-      ip, date, _, _, status_code, file_size = line.strip().split()
-      status_code = int(status_code)
-      file_size = int(file_size)
-    except ValueError:
-      # Skip lines with invalid format
-      continue
-
-    # Update counters
-    total_size += file_size
-    status_counts[status_code] += 1
-    line_count += 1
-
-    # Print stats after every 10 lines or on keyboard interrupt
-    if line_count % 10 == 0 or line_count == 1:
-      print_stats()
-
-except KeyboardInterrupt:
-  # Print stats on keyboard interrupt
-  print_stats()
+        for line in sys.stdin:
+            parse_stdin(line)
+            # print the stats after every 10 outputs
+            if count % 10 == 0:
+                print_stats()
+            count += 1
+    except KeyboardInterrupt:
+        print_stats()
+        raise
+    print_stats()
