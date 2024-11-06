@@ -3,6 +3,7 @@
 Main file for testing
 """
 
+
 def validUTF8(data):
     """ Number of continuation bytes we are expecting"""
     num_continuation_bytes = 0
@@ -31,4 +32,3 @@ def validUTF8(data):
             num_continuation_bytes -= 1
 
     return num_continuation_bytes == 0
-
