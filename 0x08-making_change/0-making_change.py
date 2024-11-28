@@ -1,21 +1,19 @@
 #!/usr/bin/python3
-"""Make chang main filee"""
+"""main code base"""
 
 
-def makeChange(coins: list, total):
-    """make change function
-    takes coin, total
-    return:
-    """
-    dp = [float('inf')] * (total + 1)
+def makeChange(coins, total):
+    """main def file"""
+    if total <= 0:
+        return 0
 
-    dp[0] = 0
+    min_coins = [float('inf')] * (total + 1)
+    min_coins[0] = 0
 
     for coin in coins:
-        for i in range(coin, total + 1):
-            dp[i] = min(dp[i], dp[i - coin] + 1)
+        for amount in range(coin, total + 1):
+            min_coins[amount] = min(
+                    min_coins[amount],
+                    min_coins[amount - coin] + 1)
 
-    if dp[total] == float('inf'):
-        return -1
-    else:
-        return dp[total]
+    return min_coins[total] if min_coins[total] != float('inf') else -1
