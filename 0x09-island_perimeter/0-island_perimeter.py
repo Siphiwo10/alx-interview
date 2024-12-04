@@ -10,7 +10,7 @@ def island_perimeter(grid):
 
     Args:
         grid (list of list of int): The grid representing the map,
-                                    where 0 represents water and 1 represents land.
+                                    where 0 represents water and 1.
 
     Returns:
         int: The perimeter of the island.
@@ -23,7 +23,7 @@ def island_perimeter(grid):
         for j in range(cols):
             if grid[i][j] == 1:
                 # Check all four directions (top, bottom, left, right)
-                # Add to the perimeter if the cell is on the edge or next to water
+                # Add to the perimeter if the cell is on the edge or next
                 if i == 0 or grid[i - 1][j] == 0:  # Top
                     perimeter += 1
                 if i == rows - 1 or grid[i + 1][j] == 0:  # Bottom
